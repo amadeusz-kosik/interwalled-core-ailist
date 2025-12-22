@@ -2,17 +2,20 @@ ThisBuild / scalaVersion := "2.12.20"
 
 ThisBuild / organization := "me.kosik.interwalled"
 
-releaseVersionFile := file("version.sbt")
-
-
-val root = (project in file("."))
+val aiList = (project in file("ailist"))
   .settings(name := "ailist")
 
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % Test
+val root = (project in file("."))
+  .aggregate(aiList)
+
+
+aiList / releaseVersionFile  := file("version.sbt")
+aiList / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % Test
 
 // SBT Release
 import ReleaseTransformations._
-releaseProcess := Seq[ReleaseStep](
+
+aiList / releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
   runClean,

@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/interwalled-ailist/ailist.iml" filepath="$PROJECT_DIR$/.idea/modules/interwalled-ailist/ailist.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/interwalled-ailist/ailist.ailist-build.iml" filepath="$PROJECT_DIR$/.idea/modules/interwalled-ailist/ailist.ailist-build.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/interwalled-ailist/ailist.main.iml" filepath="$PROJECT_DIR$/.idea/modules/interwalled-ailist/ailist.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/interwalled-ailist/ailist.test.iml" filepath="$PROJECT_DIR$/.idea/modules/interwalled-ailist/ailist.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/interwalled-ailist/root.iml" filepath="$PROJECT_DIR$/.idea/modules/interwalled-ailist/root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/interwalled-ailist/ailist/root.ailist.iml" filepath="$PROJECT_DIR$/.idea/modules/interwalled-ailist/ailist/root.ailist.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/interwalled-ailist/ailist/root.ailist.main.iml" filepath="$PROJECT_DIR$/.idea/modules/interwalled-ailist/ailist/root.ailist.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/interwalled-ailist/ailist/root.ailist.test.iml" filepath="$PROJECT_DIR$/.idea/modules/interwalled-ailist/ailist/root.ailist.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/interwalled-ailist/root.main.iml" filepath="$PROJECT_DIR$/.idea/modules/interwalled-ailist/root.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/interwalled-ailist/root.root-build.iml" filepath="$PROJECT_DIR$/.idea/modules/interwalled-ailist/root.root-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/interwalled-ailist/root.test.iml" filepath="$PROJECT_DIR$/.idea/modules/interwalled-ailist/root.test.iml" />
     </modules>
   </component>
 </project>

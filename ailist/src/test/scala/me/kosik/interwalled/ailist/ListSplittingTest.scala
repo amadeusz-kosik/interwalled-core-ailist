@@ -36,7 +36,7 @@ class ListSplittingTest extends AnyFunSuite with Matchers {
       Interval("CH1",  15,  33, "NIL"),
     )
 
-    val aiList = buildList(intervals, new AIListConfig(10, 5, 5, 3))
+    val aiList = buildList(intervals, new AIListConfig(10, 5, 5, 3, true))
 
     assert(21 == aiList.size,               "All 21 Intervals should be persisted.")
     assert( 2 == aiList.getComponentsCount, "Intervals ending with > 60 should be placed in a separate component.")
@@ -71,7 +71,7 @@ class ListSplittingTest extends AnyFunSuite with Matchers {
       Interval("CH1",  15,  33, "NIL"),
     )
 
-    val aiList = buildList(intervals, new AIListConfig(10, 5, 5, 25))
+    val aiList = buildList(intervals, new AIListConfig(10, 5, 5, 25, true))
 
     assert(21 == aiList.size,               "All 21 Intervals should be persisted.")
     assert( 1 == aiList.getComponentsCount, "All intervals should be placed in the same component.")
@@ -106,7 +106,7 @@ class ListSplittingTest extends AnyFunSuite with Matchers {
       Interval("CH1",  15,  33, "NIL"),
     )
 
-    val aiList = buildList(intervals, new AIListConfig(1, 5, 5, 3))
+    val aiList = buildList(intervals, new AIListConfig(1, 5, 5, 3, true))
 
     assert(21 == aiList.size,               "All 21 Intervals should be persisted.")
     assert( 1 == aiList.getComponentsCount, "All intervals should be placed in the same component.")
