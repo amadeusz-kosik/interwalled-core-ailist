@@ -2,6 +2,8 @@ package me.kosik.interwalled.ailist;
 
 import me.kosik.interwalled.ailist.data.AIListConfiguration;
 import me.kosik.interwalled.ailist.data.Interval;
+import me.kosik.interwalled.ailist.data.IntervalComparator;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -9,15 +11,21 @@ import java.util.Comparator;
 public class AIListBuilder<T> implements Serializable {
 
     private final AIListConfiguration config;
-    private final ArrayList<Interval<T>> intervals = new ArrayList<>();
+    private final ArrayList<Interval<T>> intervals;
 
     public AIListBuilder(final AIListConfiguration config) {
-        this.config = config;
+        this.config    = config;
+        this.intervals = new ArrayList<>();
+    }
+
+    public AIListBuilder(final AIListConfiguration config, final ArrayList<Interval<T>> intervals) {
+        this.config    = config;
+        this.intervals = intervals;
     }
 
     public AIList<T> build() {
         if(! config.isInputDataSorted()) {
-            intervals.sort(Comparator.comparingLong(Interval::from));
+            intervals.sort(IntervalComparator.comparing());
         }
 
         int componentsCount = 0;
@@ -87,7 +95,7 @@ public class AIListBuilder<T> implements Serializable {
 
                 // Save new component
                 ++ componentsCount;
-                componentsStartIndexes.add(currentComponentStartIndex); // ERROR
+                componentsStartIndexes.add(currentComponentStartIndex);
                 componentsLengths.add(currentComponentLength);
 
                 // Re-add extracted intervals back to the original list.
