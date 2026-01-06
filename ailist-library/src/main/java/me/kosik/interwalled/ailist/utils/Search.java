@@ -1,13 +1,12 @@
 package me.kosik.interwalled.ailist.utils;
 
-import me.kosik.interwalled.ailist.data.Interval;
-import java.util.ArrayList;
+import me.kosik.interwalled.ailist.data.Intervals;
 
 
-public class BinarySearch {
+public class Search {
 
-    public static <T> int findRightmost(
-            final ArrayList<Interval<T>> intervals,
+    public static <T> int findRightmostBinary(
+            final Intervals<T> intervals,
             final int leftBound,
             final int rightBound,
             final long queryEnd
@@ -41,6 +40,20 @@ public class BinarySearch {
             }
         }
 
-        return LinearSearch.findRightmost(intervals, leftIndex, rightIndex, queryEnd);
+        return findRightmostLinear(intervals, leftIndex, rightIndex, queryEnd);
+    }
+
+    public static <T> int findRightmostLinear(
+            final Intervals<T> intervals,
+            final int leftBound,
+            final int rightBound,
+            final long queryEnd
+    ) {
+        for(int index = rightBound; index >= leftBound; -- index) {
+            if(intervals.get(index).from() <= queryEnd)
+                return index;
+        }
+
+        return -1;
     }
 }

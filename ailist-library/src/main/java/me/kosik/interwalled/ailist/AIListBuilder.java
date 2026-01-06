@@ -3,10 +3,10 @@ package me.kosik.interwalled.ailist;
 import me.kosik.interwalled.ailist.data.AIListConfiguration;
 import me.kosik.interwalled.ailist.data.Interval;
 import me.kosik.interwalled.ailist.data.IntervalComparator;
+import me.kosik.interwalled.ailist.data.Intervals;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class AIListBuilder<T> implements Serializable {
 
@@ -127,7 +127,7 @@ public class AIListBuilder<T> implements Serializable {
         }
 
         return new AIList<>(
-            intervals,
+            new Intervals<T>(intervals),
             componentsCount,
             componentsLengths,
             componentsStartIndexes,

@@ -1,5 +1,6 @@
 package me.kosik.interwalled.ailist.data;
 
+
 public record AIListConfiguration(
         Integer maximumComponentsCount,
         Integer intervalsCountToCheckLookahead,
