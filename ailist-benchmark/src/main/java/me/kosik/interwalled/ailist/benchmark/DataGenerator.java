@@ -36,6 +36,16 @@ public class DataGenerator {
         return output;
     }
 
+    public static ArrayList<Interval<String>> querySparse(final int rowsCount, final int databaseRowsCount) {
+        ArrayList<Interval<String>> output = new ArrayList<>(rowsCount);
+        return intervals(rowsCount, databaseRowsCount / rowsCount, 0, output);
+    }
+
+    public static ArrayList<Interval<String>> queryDense(final int rowsCount, final int databaseRowsCount) {
+        ArrayList<Interval<String>> output = new ArrayList<>(rowsCount);
+        return intervals(rowsCount, databaseRowsCount / rowsCount, 500, output);
+    }
+
     private static ArrayList<Interval<String>> intervals(final int rowsCount, final int width, final int overlap, final ArrayList<Interval<String>> output) {
         assert rowsCount >  0;
         assert width     >= 0;

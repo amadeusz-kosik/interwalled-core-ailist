@@ -2,6 +2,7 @@ package me.kosik.interwalled.ailist.benchmark;
 
 import me.kosik.interwalled.ailist.AIList;
 import me.kosik.interwalled.ailist.AIListBuilder;
+import me.kosik.interwalled.ailist.AIListIterator;
 import me.kosik.interwalled.ailist.data.AIListConfiguration;
 import me.kosik.interwalled.ailist.data.Interval;
 import org.openjdk.jmh.annotations.*;
@@ -9,7 +10,6 @@ import org.openjdk.jmh.infra.Blackhole;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -20,7 +20,16 @@ import java.util.concurrent.TimeUnit;
 @Measurement(iterations = 20, time = 1, timeUnit = TimeUnit.SECONDS)
 @Fork(1)
 @State(Scope.Benchmark)
-public class ListBuilding {
+public class ListDataStructure {
+
+
+    @Param({
+            "128000",
+            "256000",
+            "512000"
+    })
+    public String dataRowsCountStr;
+
     @Param({
             "consecutiveIntervals",
             "overlappingIntervals",
@@ -34,17 +43,24 @@ public class ListBuilding {
     public String dataSource;
 
     @Param({
-            "128000",
-            "256000",
-            "512000"
+            "16000",
+            "32000",
+            "64000"
     })
-    public String rowsCountStr;
+    public String queryRowsCountStr;
+
+    @Param({
+            "querySparse",
+            "queryDense"
+    })
+    public String querySource;
 
     private final Map<String, ArrayList<Interval<String>>> dataSources = new HashMap<>();
+    private final Map<String, ArrayList<Interval<String>>> querySources = new HashMap<>();
 
     @Setup
     public void setup() {
-        final int rowsCount = Integer.parseInt(rowsCountStr);
+        final int rowsCount = Integer.parseInt(dataRowsCountStr);
 
         dataSources.put("consecutiveIntervals",     DataGenerator.consecutive(rowsCount));
         dataSources.put("overlappingIntervals",     DataGenerator.overlapping(rowsCount));
@@ -54,26 +70,24 @@ public class ListBuilding {
         dataSources.put("mixed2Intervals",          DataGenerator.mixed(rowsCount / 2, 2));
         dataSources.put("mixed3Intervals",          DataGenerator.mixed(rowsCount / 3, 3));
         dataSources.put("mixed4Intervals",          DataGenerator.mixed(rowsCount / 4, 4));
+
+        final int queryRowsCount = Integer.parseInt(queryRowsCountStr);
+
+        querySources.put("querySparse",             DataGenerator.querySparse(queryRowsCount, rowsCount));
+        querySources.put("queryDense",              DataGenerator.queryDense(queryRowsCount, rowsCount));
     }
 
     @Benchmark
-    public void benchmarkBulkLoad(final Blackhole blackhole) {
+    public void benchmarkQuery(final Blackhole blackhole) {
         AIListBuilder<String> aiListBuilder =
                 new AIListBuilder<>(AIListConfiguration.DEFAULT, dataSources.get(dataSource));
-
         AIList<String> aiList = aiListBuilder.build();
-        blackhole.consume(aiList);
-    }
 
-    @Benchmark
-    public void benchmarkIterativeLoad(final Blackhole blackhole) {
-        AIListBuilder<String> aiListBuilder =
-                new AIListBuilder<>(AIListConfiguration.DEFAULT);
-
-        for(Interval<String> interval : dataSources.get(dataSource))
-            aiListBuilder.put(interval);
-
-        AIList<String> aiList = aiListBuilder.build();
-        blackhole.consume(aiList);
+        for(Interval<String> interval: querySources.get(querySource)) {
+            for (AIListIterator<String> it = aiList.overlapping(interval); it.hasNext(); ) {
+                Interval<String> dbInterval = it.next();
+                blackhole.consume(dbInterval);
+            }
+        }
     }
 }
