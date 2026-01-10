@@ -1,5 +1,6 @@
 package me.kosik.interwalled.ailist;
 
+import me.kosik.interwalled.ailist.model.Interval;
 import me.kosik.interwalled.ailist.utils.BinarySearch;
 import java.util.Iterator;
 
@@ -52,10 +53,10 @@ public class AIListIterator<T> implements Iterator<Interval<T>>
             return;
         }
 
-        final int  currentComponentStartIndex = currentComponentStartIndex();
-        final int  currentComponentLength     = currentComponentLength();
+        final int  currentComponentStartIndex = parentAIList.getComponentStartIndex(currentComponentIndex);
+        final int  currentComponentLength     = parentAIList.getComponentLength(currentComponentIndex);
         final int  currentComponentEndIndex   = currentComponentStartIndex + currentComponentLength - 1;
-        final long currentComponentMaxEnd     = currentComponentMaxEnd();
+        final long currentComponentMaxEnd     = parentAIList.getComponentMaxEnd(currentComponentIndex);
 
         // Shortcut for completely disjoint intervals.
         //  1/ if components_max < query.start, skip
@@ -72,7 +73,7 @@ public class AIListIterator<T> implements Iterator<Interval<T>>
         }
 
         // Find the rightmost element satisfying interval.start < queryEnd condition:
-        int rightmostIntervalIndex = BinarySearch.findRightmost(
+        int rightmostIntervalIndex = BinarySearch.findRightmostBinary(
                 parentAIList.getIntervals(),
                 currentComponentStartIndex,
                 currentComponentEndIndex,
@@ -96,7 +97,7 @@ public class AIListIterator<T> implements Iterator<Interval<T>>
             return;
         }
 
-        final int currentComponentStartIndex = currentComponentStartIndex();
+        final int currentComponentStartIndex = parentAIList.getComponentStartIndex(currentComponentIndex);
 
         // Try picking next interval in the current component.
         //  In fact, try picking _previous_ interval, as the algorithm goes from right to left.
@@ -110,7 +111,7 @@ public class AIListIterator<T> implements Iterator<Interval<T>>
 
             if (_nextInterval.from() <= queryEnd && _nextInterval.to() >= queryStart) {
                 break;
-            } else if(intervalMaxEnd(_nextIntervalIndex) < queryStart) {
+            } else if(parentAIList.getIntervalMaxEnd(_nextIntervalIndex) < queryStart) {
                 _nextInterval = null;
                 _nextIntervalIndex -= 1;
 
@@ -127,21 +128,5 @@ public class AIListIterator<T> implements Iterator<Interval<T>>
         } else {
             checkNextComponent();
         }
-    }
-
-    private int currentComponentStartIndex() {
-        return parentAIList.getComponentStartIndex(currentComponentIndex);
-    }
-
-    private int currentComponentLength() {
-        return parentAIList.getComponentLength(currentComponentIndex);
-    }
-
-    private long currentComponentMaxEnd() {
-        return parentAIList.getComponentMaxEnd(currentComponentIndex);
-    }
-
-    private long intervalMaxEnd(final int intervalIndex) {
-        return parentAIList.getIntervalMaxEnd(intervalIndex);
     }
 }

@@ -1,37 +1,40 @@
 package me.kosik.interwalled.ailist;
 
+import me.kosik.interwalled.ailist.model.Interval;
+import me.kosik.interwalled.ailist.model.Intervals;
+
 import java.io.Serializable;
-import java.util.ArrayList;
+
 
 public class AIList<T> implements Serializable {
 
     // All intervals
-    private final ArrayList<Interval<T>> intervals;
+    private final Intervals<T> intervals;
 
     // Number of components (sub lists of intervals).
     private final int componentsCount;
 
     // Mapping of component index to component's length.
-    private final ArrayList<Integer> componentsLengths;
+    private final int[] componentsLengths;
 
     // Mapping of component index to component's starting index (offset) in {intervals}.
-    private final ArrayList<Integer> componentsStartIndexes;
+    private final int[] componentsStartIndexes;
 
     // Mapping of component index to maximum 'end' value in of all component's intervals.
-    private final ArrayList<Long> componentsMaxEnds;
+    private final long[] componentsMaxEnds;
 
     AIList(
-            final ArrayList<Interval<T>> intervals,
-            final int componentsCount,
-            final ArrayList<Integer> componentsLengths,
-            final ArrayList<Integer> componentsStartIndexes,
-            final ArrayList<Long> componentsMaxEnds)
+            final Intervals<T> intervals,
+            final int       componentsCount,
+            final int[]     componentsLengths,
+            final int[]     componentsStartIndexes,
+            final long[]    componentsMaxEnds)
     {
-        this.intervals = intervals;
-        this.componentsCount = componentsCount;
-        this.componentsLengths = componentsLengths;
+        this.intervals              = intervals;
+        this.componentsCount        = componentsCount;
+        this.componentsLengths      = componentsLengths;
         this.componentsStartIndexes = componentsStartIndexes;
-        this.componentsMaxEnds = componentsMaxEnds;
+        this.componentsMaxEnds      = componentsMaxEnds;
     }
 
     public <U> AIListIterator<T> overlapping(Interval<U> interval) {
@@ -41,27 +44,27 @@ public class AIList<T> implements Serializable {
     /* OverlapIterator interface. */
 
     int size() {
-        return intervals.size();
+        return intervals.length();
     }
 
     int getComponentStartIndex(final int componentIndex) {
-        return componentsStartIndexes.get(componentIndex);
+        return componentsStartIndexes[componentIndex];
     }
 
     int getComponentLength(final int componentIndex) {
-        return componentsLengths.get(componentIndex);
+        return componentsLengths[componentIndex];
     }
 
     long getComponentMaxEnd(final int componentIndex) {
         int componentStartIndex = getComponentStartIndex(componentIndex);
-        int componentLength = getComponentLength(componentIndex);
-        int componentEndIndex = componentStartIndex + componentLength - 1;
+        int componentLength     = getComponentLength(componentIndex);
+        int componentEndIndex   = componentStartIndex + componentLength - 1;
 
-        return componentsMaxEnds.get(componentEndIndex);
+        return componentsMaxEnds[componentEndIndex];
     }
 
     long getIntervalMaxEnd(final int intervalIndex) {
-        return componentsMaxEnds.get(intervalIndex);
+        return componentsMaxEnds[intervalIndex];
     }
 
     int getComponentsCount() {
@@ -72,7 +75,7 @@ public class AIList<T> implements Serializable {
         return intervals.get(index);
     }
 
-    ArrayList<Interval<T>> getIntervals() {
+    Intervals<T> getIntervals() {
         return intervals;
     }
 
@@ -88,8 +91,8 @@ public class AIList<T> implements Serializable {
             sb.append(componentIndex);
             sb.append("{");
 
-            for(int intervalIndex = 0; intervalIndex < componentsLengths.get(componentIndex); ++ intervalIndex) {
-                int intervalRealIndex = componentsStartIndexes.get(componentIndex) + intervalIndex;
+            for(int intervalIndex = 0; intervalIndex < componentsLengths[componentIndex]; ++ intervalIndex) {
+                int intervalRealIndex = componentsStartIndexes[componentIndex] + intervalIndex;
                 Interval<T> interval = intervals.get(intervalRealIndex);
 
                 sb.append("<");
