@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ListSplittingTest {
 
-    final private List<Interval<String>> intervals = Arrays.asList(
+    final private List<Interval<String>> basicData = Arrays.asList(
         new Interval<>("CH1",   1,  11, "NIL"),
         new Interval<>("CH1",   1,  12, "NIL"),
         new Interval<>("CH1",   2,  13, "NIL"),
@@ -46,7 +46,7 @@ public class ListSplittingTest {
             new AIListConfiguration(10, 5, 5, 3, false);
 
         final AIList<String> aiList =
-            ListBuilder.buildAIList(aiListConfig, intervals);
+            ListBuilder.buildAIList(aiListConfig, basicData);
 
         assertEquals(21, aiList.size());
         assertEquals(2, aiList.getComponentsCount(), "Intervals ending with > 60 should be placed in a separate component.");
@@ -58,7 +58,7 @@ public class ListSplittingTest {
             new AIListConfiguration(10, 5, 5, 25, false);
 
         final AIList<String> aiList =
-            ListBuilder.buildAIList(aiListConfig, intervals);
+            ListBuilder.buildAIList(aiListConfig, basicData);
 
         assertEquals(21, aiList.size());
         assertEquals(1, aiList.getComponentsCount(), "All intervals should be placed in the same component.");
@@ -66,13 +66,39 @@ public class ListSplittingTest {
 
     @Test
     void forceMaximalComponentsCount() {
-    final AIListConfiguration aiListConfig =
+        final AIListConfiguration aiListConfig =
                 new AIListConfiguration(1, 5, 5, 3, false);
 
         final AIList<String> aiList =
-            ListBuilder.buildAIList(aiListConfig, intervals);
+            ListBuilder.buildAIList(aiListConfig, basicData);
 
         assertEquals(21, aiList.size());
         assertEquals(1, aiList.getComponentsCount(), "All intervals should be placed in the same component.");
+    }
+
+    // Ignore
+    void splitInitialOutlier() {
+        final AIList<String> aiList = ListBuilder.buildAIList(
+            new AIListConfiguration(4, 3, 2, 4, false),
+            Arrays.asList(
+                new Interval<>("CH1",   0,  64, "NIL"),
+                new Interval<>("CH1",   0,  96, "NIL"),
+                new Interval<>("CH1",   0, 128, "NIL"),
+                new Interval<>("CH1",   1,   2, "NIL"),
+                new Interval<>("CH1",   2,   3, "NIL"),
+                new Interval<>("CH1",   3,   4, "NIL"),
+                new Interval<>("CH1",   4,   5, "NIL"),
+                new Interval<>("CH1",   5,   6, "NIL"),
+                new Interval<>("CH1",   6,   7, "NIL"),
+                new Interval<>("CH1",   7,   8, "NIL"),
+                new Interval<>("CH1",   8,   9, "NIL"),
+                new Interval<>("CH1",   9,  10, "NIL")
+            )
+        );
+
+        assertEquals(12, aiList.size());
+        assertEquals( 2, aiList.getComponentsCount(), "Outliers should be in a separate group.");
+        assertEquals( 9, aiList.getComponentLength(0), "First component should contain most elements.");
+        assertEquals( 3, aiList.getComponentLength(1), "Last component should store the outliers.");
     }
 }

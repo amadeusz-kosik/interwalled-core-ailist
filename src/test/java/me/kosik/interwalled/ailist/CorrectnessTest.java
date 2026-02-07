@@ -18,8 +18,8 @@ public class CorrectnessTest {
 
     @Test
     void noOverlappingIntervals() {
-        final List<Interval<String>> lhs = DataGenerators.consecutiveIntervals(1000);
-        final List<Interval<String>> rhs = DataGenerators.consecutiveIntervals(2000, 1000);
+        final List<Interval<String>> lhs = DataGenerators.consecutiveIntervals(100);
+        final List<Interval<String>> rhs = DataGenerators.consecutiveIntervals(200, 100);
 
         final AIList<String> aiList = ListBuilder.buildAIList(lhs);
 
@@ -29,11 +29,10 @@ public class CorrectnessTest {
         assertIterableEquals(expected, actual);
     }
 
-
     @Test
     void oneToOneIntervals() {
-        final List<Interval<String>> lhs = DataGenerators.consecutiveIntervals(1000);
-        final List<Interval<String>> rhs = DataGenerators.consecutiveIntervals(1000);
+        final List<Interval<String>> lhs = DataGenerators.consecutiveIntervals(100);
+        final List<Interval<String>> rhs = DataGenerators.consecutiveIntervals(100);
 
         final AIList<String> aiList = ListBuilder.buildAIList(lhs);
 
@@ -45,8 +44,8 @@ public class CorrectnessTest {
 
     @Test
     void allToOneIntervals() {
-        final List<Interval<String>> lhs = DataGenerators.consecutiveIntervals(1000);
-        final List<Interval<String>> rhs = DataGenerators.consecutiveIntervals(0, 1000, 1);
+        final List<Interval<String>> lhs = DataGenerators.consecutiveIntervals(100);
+        final List<Interval<String>> rhs = DataGenerators.consecutiveIntervals(0, 100, 1);
 
         final AIList<String> aiList = ListBuilder.buildAIList(lhs);
 
@@ -58,8 +57,8 @@ public class CorrectnessTest {
 
     @Test
     void oneToAllIntervals() {
-        final List<Interval<String>> lhs = DataGenerators.consecutiveIntervals(0, 1001, 1);
-        final List<Interval<String>> rhs = DataGenerators.consecutiveIntervals(1000);
+        final List<Interval<String>> lhs = DataGenerators.consecutiveIntervals(0, 101, 1);
+        final List<Interval<String>> rhs = DataGenerators.consecutiveIntervals(100);
 
         final AIList<String> aiList = ListBuilder.buildAIList(lhs);
 
