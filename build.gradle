@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'me.champeau.jmh' version '0.7.3'
     id 'net.researchgate.release' version '3.1.0'
 }
 
@@ -12,8 +13,22 @@ repositories {
 
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
+
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    jmh 'org.openjdk.jmh:jmh-core:0.9'
+    jmh 'org.openjdk.jmh:jmh-generator-annprocess:0.9'
+    jmh 'org.openjdk.jmh:jmh-generator-bytecode:0.9'
+
+//    // this is the line that solves the missing /META-INF/BenchmarkList error
+//    jmhAnnotationProcessor 'org.openjdk.jmh:jmh-generator-annprocess:1.37'
+}
+
+jmh {
+    // Use profilers to collect additional data. Supported profilers:
+    // [cl, comp, gc, stack, perf, perfnorm, perfasm, xperf, xperfasm, hs_cl, hs_comp, hs_gc, hs_rt, hs_thr, async]
+    // profilers = [ 'jfr' ]
 }
 
 test {
@@ -28,5 +43,4 @@ release {
         pushToRemote.set('github')
         signTag.set(true)
     }
-
 }
