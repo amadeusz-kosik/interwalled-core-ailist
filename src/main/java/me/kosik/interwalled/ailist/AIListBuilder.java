@@ -58,26 +58,8 @@ public class AIListBuilder<T> implements Serializable {
 
                 for(int currentIntervalIndex = currentComponentStartIndex; currentIntervalIndex < intervals.size(); ) {
                     final Interval<T> currentInterval = intervals.get(currentIntervalIndex);
-                    int coverage = 0;
 
-                    // Count interval's coverage: how many further intervals are "covered" by the current one's length.
-                    for(int lookaheadOffset = 1; lookaheadOffset <= config.intervalsCountToCheckLookahead(); ++ lookaheadOffset) {
-                        int lookaheadIndex = lookaheadOffset + currentIntervalIndex;
-
-                        // Guard against going outside the intervals' list.
-                        //  Break if all intervals are already visited.
-                        if (lookaheadIndex >= intervals.size())
-                            break;
-
-                        // If current interval is reaching further than the checked
-                        //  one, increment coverage
-                        if (intervals.get(lookaheadIndex).to() <= currentInterval.to())
-                            coverage++;
-
-                        // If enough intervals are already covered, skip browsing the rest.
-                        if (coverage >= config.intervalsCountToTriggerExtraction())
-                            break;
-                    }
+                    int coverage = computeCoverage(currentIntervalIndex, currentInterval);
 
                     if(coverage == config.intervalsCountToTriggerExtraction()) {
                         // Move the current interval to the extracted ones.
@@ -134,6 +116,31 @@ public class AIListBuilder<T> implements Serializable {
             componentsStartIndexes.stream().mapToInt(Integer::valueOf).toArray(),
             componentsMaxEnds
         );
+    }
+
+    private int computeCoverage(final int currentIntervalIndex, final Interval<?> currentInterval) {
+        int coverage = 0;
+
+        // Count interval's coverage: how many further intervals are "covered" by the current one's length.
+        for(int lookaheadOffset = 1; lookaheadOffset <= config.intervalsCountToCheckLookahead(); ++ lookaheadOffset) {
+            int lookaheadIndex = lookaheadOffset + currentIntervalIndex;
+
+            // Guard against going outside the intervals' list.
+            //  Break if all intervals are already visited.
+            if (lookaheadIndex >= intervals.size())
+                break;
+
+            // If current interval is reaching further than the checked
+            //  one, increment coverage
+            if (intervals.get(lookaheadIndex).to() <= currentInterval.to())
+                coverage++;
+
+            // If enough intervals are already covered, skip browsing the rest.
+            if (coverage >= config.intervalsCountToTriggerExtraction())
+                break;
+        }
+
+        return coverage;
     }
 
     public void put(final Interval<T> interval) {
