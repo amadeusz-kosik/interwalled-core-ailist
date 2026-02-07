@@ -1,6 +1,14 @@
 package me.kosik.interwalled.ailist.model;
 
 
+/**
+ *
+ * @param maximumComponentsCount
+ * @param intervalsCountToCheckLookahead
+ * @param intervalsCountToTriggerExtraction
+ * @param minimumComponentSize
+ * @param isInputDataSorted
+ */
 public record AIListConfiguration(
         Integer maximumComponentsCount,
         Integer intervalsCountToCheckLookahead,

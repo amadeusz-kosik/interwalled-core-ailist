@@ -49,7 +49,7 @@ public class ListSplittingTest {
             ListBuilder.buildAIList(aiListConfig, basicData);
 
         assertEquals(21, aiList.size());
-        assertEquals(2, aiList.getComponentsCount(), "Intervals ending with > 60 should be placed in a separate component.");
+        assertEquals(3, aiList.getComponentsCount(), "Intervals ending with > 60 should be placed in a separate component.");
     }
 
     @Test
@@ -76,10 +76,10 @@ public class ListSplittingTest {
         assertEquals(1, aiList.getComponentsCount(), "All intervals should be placed in the same component.");
     }
 
-    // Ignore
+    @Test
     void splitInitialOutlier() {
         final AIList<String> aiList = ListBuilder.buildAIList(
-            new AIListConfiguration(4, 3, 2, 4, false),
+            new AIListConfiguration(4, 6, 4, 4, false),
             Arrays.asList(
                 new Interval<>("CH1",   0,  64, "NIL"),
                 new Interval<>("CH1",   0,  96, "NIL"),
