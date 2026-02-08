@@ -10,13 +10,14 @@ package me.kosik.interwalled.ailist.model;
  * @param isInputDataSorted
  */
 public record AIListConfiguration(
-        Integer maximumComponentsCount,
-        Integer intervalsCountToCheckLookahead,
-        Integer intervalsCountToTriggerExtraction,
-        Integer minimumComponentSize,
-        Boolean isInputDataSorted
+        int maximumComponentsCount,
+        int intervalsCountToCheckLookahead,
+        int intervalsCountToTriggerExtraction,
+        int minimumComponentSize,
+        boolean checkLookbehindCoverage,
+        boolean isInputDataSorted
 ) {
 
     final public static AIListConfiguration DEFAULT =
-            new AIListConfiguration(10, 20, 10, 64, false);
+            new AIListConfiguration(32, 24, 10, 64, true, false);
 }
