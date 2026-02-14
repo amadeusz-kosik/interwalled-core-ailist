@@ -123,21 +123,22 @@ public class AIListBuilder<T> implements Serializable {
             final int currentIntervalIndex,
             final ArrayList<Interval<T>> intervals
     ) {
+        if(config.checkLookbehindCoverage()) {
+            // Check all intervals from (last - intervalsCountToCheckLookahead) to last
+            int _from = Math.max(componentStartIndex, currentIntervalIndex - config.intervalsCountToCheckLookahead());
+            int _to = currentIntervalIndex;
 
-        // Check all intervals from (last - intervalsCountToCheckLookahead) to last
-        int _from = Math.max(componentStartIndex, currentIntervalIndex - config.intervalsCountToCheckLookahead());
-        int _to = currentIntervalIndex;
+            int lookbehindCoverage = 0;
 
-        int lookbehindCoverage = 0;
-
-        for(int lookbehindIndex = _from; lookbehindIndex < _to; lookbehindIndex += 1) {
-            if(intervals.get(lookbehindIndex).to() >= intervals.get(currentIntervalIndex).to()) {
-                lookbehindCoverage += 1;
+            for(int lookbehindIndex = _from; lookbehindIndex < _to; lookbehindIndex += 1) {
+                if(intervals.get(lookbehindIndex).to() >= intervals.get(currentIntervalIndex).to()) {
+                    lookbehindCoverage += 1;
+                }
             }
-        }
 
-        if(lookbehindCoverage >= config.intervalsCountToTriggerExtraction())
-            return false;
+            if(lookbehindCoverage >= config.intervalsCountToTriggerExtraction())
+                return false;
+        }
 
         int lookaheadCoverage = 0;
 

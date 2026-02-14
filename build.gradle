@@ -32,7 +32,7 @@ jmh {
     // [cl, comp, gc, stack, perf, perfnorm, perfasm, xperf, xperfasm, hs_cl, hs_comp, hs_gc, hs_rt, hs_thr, async]
 //    profilers = [ 'jfr' ]
 //    includes =  [ 'ListBuilding', 'ListDataStructure']
-    includes =  [ '.*\\.IntervalsCountToTriggerExtraction']
+    includes =  [ '.*\\.CheckLookbehindCoverage']
 }
 
 test {

@@ -19,5 +19,5 @@ public record AIListConfiguration(
 ) {
 
     final public static AIListConfiguration DEFAULT =
-            new AIListConfiguration(32, 24, 10, 64, true, false);
+            new AIListConfiguration(32, 24, 24, 64, false, false);
 }

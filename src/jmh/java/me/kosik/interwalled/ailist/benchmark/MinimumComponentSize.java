@@ -20,10 +20,10 @@ import java.util.concurrent.TimeUnit;
 @Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
 @Fork(1)
 @State(Scope.Benchmark)
-public class IntervalsCountToCheckLookahead {
+public class MinimumComponentSize {
 
-    @Param({"8", "16", "24", "32"})
-    public String intervalsCountToCheckLookahead;
+    @Param({"32", "64", "96", "128"})
+    public String minimumComponentSize;
 
     @Param({
             "consecutiveIntervals",
@@ -84,9 +84,9 @@ public class IntervalsCountToCheckLookahead {
     private AIListConfiguration buildConfiguration() {
         return new AIListConfiguration(
             AIListConfiguration.DEFAULT.maximumComponentsCount(),
-            Integer.parseInt(intervalsCountToCheckLookahead),
-            Integer.parseInt(intervalsCountToCheckLookahead) / 2,
-            AIListConfiguration.DEFAULT.minimumComponentSize(),
+            AIListConfiguration.DEFAULT.intervalsCountToCheckLookahead(),
+            AIListConfiguration.DEFAULT.intervalsCountToTriggerExtraction(),
+            Integer.parseInt(minimumComponentSize),
             true,
             false
         );

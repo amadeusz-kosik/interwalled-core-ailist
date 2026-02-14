@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
 @Fork(1)
 @State(Scope.Benchmark)
-public class ConfigurationMaximumComponentsCount {
+public class MaximumComponentsCount {
 
     @Param({"8", "16", "32"})
     public String maximumComponentsCount;
@@ -86,7 +86,7 @@ public class ConfigurationMaximumComponentsCount {
             Integer.parseInt(maximumComponentsCount),
             20,
             10,
-            AIListConfiguration.DEFAULT.minimumComponentSize(),             // 64
+            AIListConfiguration.DEFAULT.minimumComponentSize(),
             true,
             false
         );

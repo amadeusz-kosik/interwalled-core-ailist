@@ -11,6 +11,7 @@ import org.openjdk.jmh.infra.Blackhole;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 
@@ -20,10 +21,10 @@ import java.util.concurrent.TimeUnit;
 @Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
 @Fork(1)
 @State(Scope.Benchmark)
-public class IntervalsCountToCheckLookahead {
+public class CheckLookbehindCoverage {
 
-    @Param({"8", "16", "24", "32"})
-    public String intervalsCountToCheckLookahead;
+    @Param({"true", "false"})
+    public String checkLookbehindCoverage;
 
     @Param({
             "consecutiveIntervals",
@@ -84,10 +85,10 @@ public class IntervalsCountToCheckLookahead {
     private AIListConfiguration buildConfiguration() {
         return new AIListConfiguration(
             AIListConfiguration.DEFAULT.maximumComponentsCount(),
-            Integer.parseInt(intervalsCountToCheckLookahead),
-            Integer.parseInt(intervalsCountToCheckLookahead) / 2,
+            AIListConfiguration.DEFAULT.intervalsCountToCheckLookahead(),
+            AIListConfiguration.DEFAULT.intervalsCountToTriggerExtraction(),
             AIListConfiguration.DEFAULT.minimumComponentSize(),
-            true,
+            Objects.equals(checkLookbehindCoverage, "true"),
             false
         );
     }
